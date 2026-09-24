@@ -1,13 +1,13 @@
 import Banner from "@/components/shared/homepage/Banner";
+import Workouts from "@/components/shared/homepage/Workouts";
 
-export default function Home() {
+const Home = () => {
   return (
     <main>
       <Banner />
-
-      <section id="library">
-        <h2>Workout Library</h2>
-      </section>
+      <Workouts />
     </main>
   );
 }
+
+export default Home

@@ -1,69 +1,137 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import logo from "@/assets/logo.png"
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const pathname = usePathname();
 
+  const links = (
+    <>
+      <li>
+        <Link
+          href="/"
+          className={
+            pathname === "/"
+              ? "bg-[#31322F] text-[#CCFF00]"
+              : "text-gray-400"
+          }
+        >
+          Workouts
+        </Link>
+      </li>
+
+      <li>
+        <Link
+          href="/my-plan"
+          className={
+            pathname === "/my-plan"
+              ? "bg-[#31322F] text-[#CCFF00]"
+              : "text-gray-400"
+          }
+        >
+          My Plan
+        </Link>
+      </li>
+    </>
+  );
+
   return (
-  <nav className="border-b border-[#1D2022] bg-[#0B0D0E] text-white">
-   <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <nav className="border-b border-[#1D2022] bg-[#0B0D0E] text-white">
+      <div className="navbar mx-auto max-w-7xl px-4 sm:px-6">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-        <Image 
-        src={logo}
-        alt="FitLog Logo"
-         width={28} height={28}
-         />
-         <span className="text-xl font-bold">
-            FITLOG
-        </span>
-        </Link>
+        {/* Navbar Start */}
+        <div className="navbar-start">
 
-        {/* Navigation */}
-       <div className="flex items-center gap-3">
-       <Link href="/"
-         className={`rounded-full px-4 py-2 ${
-           pathname === "/" ? "bg-[#31322f] text-[#ccff00]" : "text-gray-400" }`
-           }>
-            Workouts
-        </Link>
+          {/* Mobile Dropdown */}
+          <div className="dropdown md:hidden">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="h-5 w-5 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </div>
 
-        <Link href="/my-plan"
-         className={`rounded-full px-4 py-2 ${
-           pathname === "/my-plan" ? "bg-[#31322f] text-[#ccff00]": "text-gray-400"}`
-           }> 
-            My Plan
-        </Link>
-       </div>
-    {/* Status */}
-    <div className="flex items-center gap-5 text-xs">
+            <ul
+              tabIndex={-1}
+              className="menu dropdown-content z-50 mt-3 w-52 rounded-box border border-[#272A2E] bg-[#17191E] p-2 shadow"
+            >
+              {links}
+            </ul>
+          </div>
 
-     {/* Plan */}
-    <div className="flex items-center gap-2">
-    <span className="text-[#8B8D91]">Plan</span>
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src={logo}
+              alt="FitLog Logo"
+              width={28}
+              height={28}
+            />
 
-    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#CCFF00] text-[10px] font-semibold text-black">
-      0
-    </span>
-    </div>
+            <span className="text-lg font-bold sm:text-xl">
+              FITLOG
+            </span>
+          </Link>
+        </div>
 
-  {/* Saved */}
-    <div className="flex items-center gap-2">
-    <span className="text-[#8B8D91]">Saved</span>
+        {/* Navbar Center - Desktop/Tablet */}
+        <div className="navbar-center hidden md:flex">
+          <ul className="menu menu-horizontal gap-2 px-1">
+            {links}
+          </ul>
+        </div>
 
-    <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#4A4D50] text-[10px] text-[#A6A8AB]">
-      0
-    </span>
-    </div>
+        {/* Navbar End */}
+        <div className="navbar-end gap-3 sm:gap-5">
 
-</div>
-  </div>
+          {/* Plan */}
+          <Link
+            href="/my-plan"
+            className="flex items-center gap-2"
+          >
+            <span className="hidden text-xs text-[#8B8D91] sm:inline">
+              Plan
+            </span>
+
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#CCFF00] text-[10px] font-semibold text-black">
+              0
+            </span>
+          </Link>
+
+          {/* Saved */}
+          <Link
+            href="/my-plan"
+            className="flex items-center gap-2"
+          >
+            <span className="hidden text-xs text-[#8B8D91] sm:inline">
+              Saved
+            </span>
+
+            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#4A4D50] text-[10px] text-[#A6A8AB]">
+              0
+            </span>
+          </Link>
+
+        </div>
+      </div>
     </nav>
   );
-}
+};
+
 export default Navbar;

@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { Oswald } from "next/font/google";
 import Navbar from "@/components/shared/Navbar";
 import "./globals.css";
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  variable: "--font-oswald",
+});
 
 export const metadata: Metadata = {
   title: "Fit Log",
@@ -14,13 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        
+      <body className={`${oswald.variable} bg-[#0B0D0E] text-white`}>
         <Navbar />
 
         {children}
-         <hr></hr>
-        <h2> Footer </h2>
+
+        {/* Footer will be created later */}
       </body>
     </html>
   );
