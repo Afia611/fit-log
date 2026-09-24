@@ -13,7 +13,7 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
     caloriesBurned,
     rating,
   } = workout;
-  
+
   return (
     <Link href={`/workouts/${id}`}>
       <div className="h-full overflow-hidden rounded-xl border border-[#272A2E] bg-[#17191E] transition hover:border-[#CCFF00]">
@@ -55,11 +55,11 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
 
           {/* Stats */}
           <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-[#272A2E] pt-4 text-xs text-[#B0B2B5]">
-            <span>⏱ {duration} min</span>
+            <span> ⏱ {duration} min</span>
 
-            <span>🔥 {caloriesBurned} kcal</span>
+            <span> 🔥 {caloriesBurned} kcal</span>
 
-            <span>★ {rating}</span>
+            <span> ★ {rating} </span>
           </div>
 
         </div>
