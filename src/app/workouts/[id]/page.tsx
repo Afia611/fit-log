@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Workout } from "@/types/workout-types";
+import WorkoutActions from "@/components/shared/WorkoutActions";
 
 type WorkoutDetailsProps = {
   params: Promise<{
@@ -149,17 +150,7 @@ const WorkoutDetailsPage = async ({
             </div>
 
             {/* Buttons - functionality comes next */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-
-              <button className="rounded-md bg-[#CCFF00] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8E600]">
-                ＋ Add to today's plan
-              </button>
-
-              <button className="rounded-md border border-[#3A3D40] px-5 py-3 text-sm text-white transition hover:border-[#CCFF00] hover:text-[#CCFF00]">
-                ♡ Save for later
-              </button>
-
-            </div>
+            <WorkoutActions workout={workout} />
 
           </div>
         </div>

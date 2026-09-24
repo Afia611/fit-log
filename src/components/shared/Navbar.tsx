@@ -1,12 +1,18 @@
 "use client";
 
+import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "@/assets/logo.png";
+import { WorkoutContext } from "@/context/WorkoutContext";
 
 const Navbar = () => {
   const pathname = usePathname();
+
+  const workoutContext = useContext(WorkoutContext);
+  const plan = workoutContext?.plan || [];
+  const saved = workoutContext?.saved || [];
 
   const links = (
     <>
@@ -110,7 +116,7 @@ const Navbar = () => {
             </span>
 
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#CCFF00] text-[10px] font-semibold text-black">
-              0
+              {plan.length}
             </span>
           </Link>
 
@@ -124,7 +130,7 @@ const Navbar = () => {
             </span>
 
             <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#4A4D50] text-[10px] text-[#A6A8AB]">
-              0
+              {saved.length}
             </span>
           </Link>
 
