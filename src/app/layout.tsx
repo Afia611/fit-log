@@ -3,6 +3,8 @@ import { Oswald } from "next/font/google";
 import Navbar from "@/components/shared/Navbar";
 import "./globals.css";
 import WorkoutProvider from "@/context/WorkoutContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -25,6 +27,12 @@ export default function RootLayout({
         <WorkoutProvider>
           <Navbar />
           {children}
+
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            theme="dark"
+          />
         </WorkoutProvider>
       </body>
     </html>
