@@ -11,6 +11,7 @@ import { Workout } from "@/types/workout-types";
 type WorkoutContextType = {
   plan: Workout[];
   saved: Workout[];
+  isLoaded: boolean;
   addToPlan: (workout: Workout) => boolean;
   saveWorkout: (workout: Workout) => boolean;
   removeFromPlan: (id: number) => void;
@@ -101,6 +102,7 @@ useEffect(() => {
       value={{
         plan,
         saved,
+        isLoaded,
         addToPlan,
         saveWorkout,
         removeFromPlan,
