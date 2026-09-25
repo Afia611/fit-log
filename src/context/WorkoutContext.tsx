@@ -6,6 +6,7 @@ import { Workout } from "@/types/workout-types";
 type WorkoutContextType = {
   plan: Workout[];
   saved: Workout[];
+  isLoading: boolean;
   addToPlan: (workout: Workout) => boolean;
   saveWorkout: (workout: Workout) => boolean;
   removeFromPlan: (id: number) => void;
@@ -19,8 +20,9 @@ const WorkoutProvider = ({ children }: { children: ReactNode }) => {
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
 
+  const isLoading = false;
+
   const addToPlan = (workout: Workout) => {
-    // Don't allow duplicate workouts
     const alreadyAdded = plan.some(
       (item) => item.id === workout.id
     );
@@ -29,7 +31,6 @@ const WorkoutProvider = ({ children }: { children: ReactNode }) => {
       return false;
     }
 
-    // Maximum 5 workouts
     if (plan.length >= 5) {
       return false;
     }
@@ -70,6 +71,7 @@ const WorkoutProvider = ({ children }: { children: ReactNode }) => {
       value={{
         plan,
         saved,
+        isLoading,
         addToPlan,
         saveWorkout,
         removeFromPlan,

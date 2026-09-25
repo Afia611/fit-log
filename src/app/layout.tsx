@@ -5,6 +5,7 @@ import "./globals.css";
 import WorkoutProvider from "@/context/WorkoutContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "@/components/shared/Footer";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -27,6 +28,8 @@ export default function RootLayout({
         <WorkoutProvider>
           <Navbar />
           {children}
+
+          <Footer />
 
           <ToastContainer
             position="top-right"

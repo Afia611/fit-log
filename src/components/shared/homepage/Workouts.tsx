@@ -6,14 +6,13 @@ const Workouts = async () => {
     "https://api.abcz.workers.dev/api/fitlog"
   );
 
-  const workouts = await res.json();
+  const workouts: Workout[] = await res.json();
 
   return (
     <section
       id="library"
       className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14"
     >
-      {/* Library Heading */}
       <div className="mb-8">
         <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold uppercase text-white sm:text-4xl">
           THE LIBRARY
@@ -24,9 +23,8 @@ const Workouts = async () => {
         </p>
       </div>
 
-      {/* Workout Cards */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {workouts.map((workout: Workout) => (
+        {workouts.map((workout) => (
           <WorkoutCard
             key={workout.id}
             workout={workout}
