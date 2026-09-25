@@ -29,5 +29,4 @@ FitLog is a responsive workout library and planning application built with Next.
    Sort workouts by Duration, Calories, or Rating, mark planned workouts as completed, remove workouts, and receive toast notifications for important actions.
 
 ## 🌐 Live Website
-
-[Visit FitLog](https://fit-log-nu-three vercel.app/)
+[Visit FitLog Live](https://fit-log-nu-three.vercel.app/)
