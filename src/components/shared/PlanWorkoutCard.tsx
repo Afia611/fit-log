@@ -1,8 +1,12 @@
 "use client";
 
+import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
+
 import { Workout } from "@/types/workout-types";
+import { WorkoutContext } from "@/context/WorkoutContext";
 
 type PlanWorkoutCardProps = {
   workout: Workout;
@@ -13,6 +17,8 @@ const PlanWorkoutCard = ({
   workout,
   type,
 }: PlanWorkoutCardProps) => {
+  const workoutContext = useContext(WorkoutContext);
+
   const {
     id,
     name,
@@ -23,13 +29,36 @@ const PlanWorkoutCard = ({
     rating,
   } = workout;
 
+  if (!workoutContext) {
+    return null;
+  }
+
+  const { removeFromPlan, removeFromSaved } = workoutContext;
+
+  // Remove workout from Plan or Saved
+  const handleRemove = () => {
+    if (type === "plan") {
+      removeFromPlan(id);
+      toast.success("Workout removed from today's plan");
+    } else {
+      removeFromSaved(id);
+      toast.success("Workout removed from saved workouts");
+    }
+  };
+
+  // Mark workout as completed
+  const handleMarkAsDone = () => {
+    removeFromPlan(id);
+    toast.success(`${name} marked as done`);
+  };
+
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-[#272A2E] bg-[#17191E] p-4 md:flex-row md:items-center">
-
+      
       {/* Left Side */}
       <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center">
-
-        {/* Thumbnail */}
+        
+        {/* Workout Thumbnail */}
         <div className="shrink-0 overflow-hidden rounded-lg">
           <Image
             src={image}
@@ -40,7 +69,7 @@ const PlanWorkoutCard = ({
           />
         </div>
 
-        {/* Workout Info */}
+        {/* Workout Information */}
         <div className="min-w-0">
           <h2 className="font-[family-name:var(--font-oswald)] text-xl font-bold uppercase text-white">
             {name}
@@ -50,7 +79,9 @@ const PlanWorkoutCard = ({
             {equipment}
           </p>
 
+          {/* Workout Stats */}
           <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-[#B0B2B5]">
+            
             <span>
               <span className="text-[#CCFF00]">◷</span>{" "}
               {duration} min
@@ -65,13 +96,15 @@ const PlanWorkoutCard = ({
               <span className="text-[#CCFF00]">☆</span>{" "}
               {rating}
             </span>
+
           </div>
         </div>
       </div>
 
       {/* Right Side Actions */}
       <div className="flex flex-wrap items-center gap-3 md:ml-auto md:justify-end">
-
+        
+        {/* View Details */}
         <Link
           href={`/workouts/${id}`}
           className="rounded-full border border-[#4A5260] px-5 py-2.5 text-xs text-white transition hover:border-[#CCFF00] hover:text-[#CCFF00]"
@@ -79,15 +112,20 @@ const PlanWorkoutCard = ({
           View Details
         </Link>
 
-        {/* Only Today's Plan gets Mark as Done */}
+        {/* Mark as Done - only Today's Plan */}
         {type === "plan" && (
-          <button className="rounded-full bg-[#CCFF00] px-5 py-2.5 text-xs font-bold text-black transition hover:bg-[#B8E600]">
+          <button
+            onClick={handleMarkAsDone}
+            className="rounded-full bg-[#CCFF00] px-5 py-2.5 text-xs font-bold text-black transition hover:bg-[#B8E600]"
+          >
             ✓&nbsp;&nbsp; Mark as Done
           </button>
         )}
 
+        {/* Remove */}
         <button
-          aria-label="Remove workout"
+          onClick={handleRemove}
+          aria-label={`Remove ${name}`}
           className="flex h-9 w-9 items-center justify-center text-lg text-[#737984] transition hover:text-red-400"
         >
           ×

@@ -1,6 +1,8 @@
 "use client";
+
 import { useContext } from "react";
 import { toast } from "react-toastify";
+
 import { WorkoutContext } from "@/context/WorkoutContext";
 import { Workout } from "@/types/workout-types";
 
@@ -23,8 +25,18 @@ const WorkoutActions = ({ workout }: { workout: Workout }) => {
       return;
     }
 
-    addToPlan(workout);
-    toast.success("Workout added to today's plan");
+    if (plan.length >= 5) {
+      toast.warning(
+        "Today's plan is full. Maximum 5 workouts allowed."
+      );
+      return;
+    }
+
+    const added = addToPlan(workout);
+
+    if (added) {
+      toast.success("Workout added to today's plan");
+    }
   };
 
   const handleSaveWorkout = () => {
@@ -37,8 +49,11 @@ const WorkoutActions = ({ workout }: { workout: Workout }) => {
       return;
     }
 
-    saveWorkout(workout);
-    toast.success("Workout saved for later");
+    const savedSuccessfully = saveWorkout(workout);
+
+    if (savedSuccessfully) {
+      toast.success("Workout saved for later");
+    }
   };
 
   return (
