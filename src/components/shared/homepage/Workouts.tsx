@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Workout } from "@/types/workout-types";
 import WorkoutLibrary from "./WorkoutLibrary";
+import Loading from "@/components/shared/Loading";
 
 const Workouts = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -15,9 +16,12 @@ const Workouts = () => {
         setIsLoading(true);
         setIsError(false);
 
-        const res = await fetch(
-          "https://api.abcz.workers.dev/api/fitlog"
-        );
+        // Fetch the workouts and keep the loading animation
+        // visible for at least 700ms.
+        const [res] = await Promise.all([
+          fetch("https://api.abcz.workers.dev/api/fitlog"),
+          new Promise((resolve) => setTimeout(resolve, 700)),
+        ]);
 
         if (!res.ok) {
           throw new Error("Failed to fetch workouts");
@@ -27,7 +31,7 @@ const Workouts = () => {
 
         setWorkouts(data);
       } catch (error) {
-        console.error(error);
+        console.error("Error loading workouts:", error);
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -46,7 +50,7 @@ const Workouts = () => {
         {/* Library Heading */}
         <div className="mb-8">
           <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold uppercase">
-            The Library
+            THE LIBRARY
           </h2>
 
           <p className="mt-1 text-sm text-[#9B9DA1]">
@@ -54,28 +58,24 @@ const Workouts = () => {
           </p>
         </div>
 
-        {/* Loading */}
-        {isLoading && (
-          <div className="flex min-h-[300px] flex-col items-center justify-center gap-4">
-            <span className="loading loading-spinner loading-lg text-[#CCFF00]"></span>
+        {/* Loading State */}
+        {isLoading ? (
+          <Loading />
+        ) : isError ? (
+          /* Error State */
+          <div className="flex min-h-[300px] items-center justify-center rounded-lg border border-[#272A2E] bg-[#17191E] px-4 text-center">
+            <div>
+              <h3 className="font-[family-name:var(--font-oswald)] text-xl font-bold uppercase text-white">
+                Unable to load workouts
+              </h3>
 
-            <p className="text-sm text-[#9B9DA1]">
-              Loading workouts...
-            </p>
+              <p className="mt-2 text-sm text-[#9B9DA1]">
+                Something went wrong while loading the workout library.
+              </p>
+            </div>
           </div>
-        )}
-
-        {/* Error */}
-        {!isLoading && isError && (
-          <div className="flex min-h-[300px] items-center justify-center">
-            <p className="text-sm text-[#9B9DA1]">
-              Unable to load workouts. Please try again.
-            </p>
-          </div>
-        )}
-
-        {/* Workout Library */}
-        {!isLoading && !isError && (
+        ) : (
+          /* Workout Library */
           <WorkoutLibrary workouts={workouts} />
         )}
       </div>

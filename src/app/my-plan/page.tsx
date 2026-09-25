@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import Link from "next/link";
 import { WorkoutContext } from "@/context/WorkoutContext";
 import PlanWorkoutCard from "@/components/shared/PlanWorkoutCard";
+import Loading from "@/components/shared/Loading";
 
 
 const MyPlanPage = () => {
@@ -22,12 +23,7 @@ const MyPlanPage = () => {
   if (!isLoaded) {
   return (
     <main className="min-h-screen bg-[#0B0D0E] text-white">
-      <div className="flex min-h-[500px] flex-col items-center justify-center gap-4">
-        <span className="loading loading-spinner loading-lg text-[#CCFF00]"></span>
-        <p className="text-sm text-[#9B9DA1]">
-          Loading workouts...
-        </p>
-      </div>
+      <Loading />
     </main>
   );
 }
