@@ -11,9 +11,9 @@ const MyPlanPage = () => {
 
   const [activeTab, setActiveTab] = useState<"plan" | "saved">("plan");
 
-  const [sortOrder, setSortOrder] = useState<
-    "default" | "shortest" | "longest"
-  >("default");
+  const [sortBy, setSortBy] = useState<
+  "duration" | "calories" | "rating"
+  >("duration");
 
   if (!workoutContext) {
     return null;
@@ -36,18 +36,21 @@ const MyPlanPage = () => {
   const activeWorkouts = activeTab === "plan" ? plan : saved;
 
   // Sort a copy so the original Context state is not changed
-  const sortedWorkouts = [...activeWorkouts].sort((a, b) => {
-    if (sortOrder === "shortest") {
-      return a.duration - b.duration;
-    }
+   const sortedWorkouts = [...activeWorkouts].sort((a, b) => {
+  if (sortBy === "duration") {
+    return a.duration - b.duration;
+  }
 
-    if (sortOrder === "longest") {
-      return b.duration - a.duration;
-    }
+  if (sortBy === "calories") {
+    return b.caloriesBurned - a.caloriesBurned;
+  }
 
-    return 0;
-  });
+  if (sortBy === "rating") {
+    return b.rating - a.rating;
+  }
 
+  return 0;
+});
   return (
     <main className="min-h-screen bg-[#0B0D0E] text-white">
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
@@ -126,21 +129,18 @@ const MyPlanPage = () => {
             <span className="text-xs text-[#8B8D91]">Sort By</span>
 
             <select
-              value={sortOrder}
-              onChange={(event) =>
-                setSortOrder(
-                  event.target.value as
-                    | "default"
-                    | "shortest"
-                    | "longest"
-                )
-              }
-              className="rounded-lg border border-[#272A2E] bg-[#17191E] px-4 py-2.5 text-xs text-white outline-none transition focus:border-[#CCFF00]"
-            >
-              <option value="default">Duration</option>
-              <option value="shortest">Shortest First</option>
-              <option value="longest">Longest First</option>
-            </select>
+            value={sortBy} onChange={(event) =>
+              setSortBy( 
+              event.target.value as | "duration"| "calories" | "rating"
+            )
+          }
+          className="rounded-lg border border-[#272A2E] bg-[#17191E] px-4 py-2.5 text-xs text-white outline-none transition focus:border-[#CCFF00]"
+          >
+            <option value="duration">Duration</option>
+            <option value="calories">Calories</option>
+            <option value="rating">Rating</option>
+          </select>
+          
           </div>
         </div>
 
