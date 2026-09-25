@@ -1,12 +1,15 @@
 "use client";
 
 import { useContext } from "react";
-import { toast } from "react-toastify";
-
 import { WorkoutContext } from "@/context/WorkoutContext";
 import { Workout } from "@/types/workout-types";
+import { toast } from "react-toastify";
 
-const WorkoutActions = ({ workout }: { workout: Workout }) => {
+type WorkoutActionsProps = {
+  workout: Workout;
+};
+
+const WorkoutActions = ({ workout }: WorkoutActionsProps) => {
   const workoutContext = useContext(WorkoutContext);
 
   if (!workoutContext) {
@@ -15,61 +18,68 @@ const WorkoutActions = ({ workout }: { workout: Workout }) => {
 
   const { plan, saved, addToPlan, saveWorkout } = workoutContext;
 
+  // Check current workout status
+  const isAlreadyInPlan = plan.some(
+    (item) => item.id === workout.id
+  );
+
+  const isAlreadySaved = saved.some(
+    (item) => item.id === workout.id
+  );
+
+  // Maximum 5 workouts can be added to today's plan
+  const isPlanFull = plan.length >= 5;
+
   const handleAddToPlan = () => {
-    const alreadyAdded = plan.some(
-      (item) => item.id === workout.id
-    );
-
-    if (alreadyAdded) {
-      toast.warning("Workout is already in today's plan");
-      return;
-    }
-
-    if (plan.length >= 5) {
-      toast.warning(
-        "Today's plan is full. Maximum 5 workouts allowed."
-      );
-      return;
-    }
-
     const added = addToPlan(workout);
 
     if (added) {
-      toast.success("Workout added to today's plan");
+      toast.success(`${workout.name} added to today's plan`);
+    } else {
+      toast.error("Unable to add workout to today's plan");
     }
   };
 
   const handleSaveWorkout = () => {
-    const alreadySaved = saved.some(
-      (item) => item.id === workout.id
-    );
-
-    if (alreadySaved) {
-      toast.warning("Workout is already saved");
-      return;
-    }
-
     const savedSuccessfully = saveWorkout(workout);
 
     if (savedSuccessfully) {
-      toast.success("Workout saved for later");
+      toast.success(`${workout.name} saved successfully`);
+    } else {
+      toast.info("Workout is already saved");
     }
   };
 
   return (
-    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+      {/* Add to Plan */}
       <button
         onClick={handleAddToPlan}
-        className="rounded-md bg-[#CCFF00] px-5 py-3 text-sm font-bold text-black transition hover:bg-[#B8E600]"
+        disabled={isPlanFull || isAlreadyInPlan}
+        className={`flex flex-1 items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold transition ${
+          isPlanFull || isAlreadyInPlan
+            ? "cursor-not-allowed bg-[#272A2E] text-[#777A80]"
+            : "bg-[#CCFF00] text-black hover:bg-[#B8E600]"
+        }`}
       >
-        ＋ Add to today&apos;s plan
+        {isAlreadyInPlan
+          ? "ADDED TO PLAN"
+          : isPlanFull
+            ? "PLAN FULL"
+            : "ADD TO TODAY'S PLAN"}
       </button>
 
+      {/* Save Workout */}
       <button
         onClick={handleSaveWorkout}
-        className="rounded-md border border-[#3A3D40] px-5 py-3 text-sm text-white transition hover:border-[#CCFF00] hover:text-[#CCFF00]"
+        disabled={isAlreadySaved}
+        className={`flex flex-1 items-center justify-center gap-2 rounded-md border px-5 py-3 text-sm font-bold transition ${
+          isAlreadySaved
+            ? "cursor-not-allowed border-[#272A2E] bg-[#17191E] text-[#777A80]"
+            : "border-[#CCFF00] text-[#CCFF00] hover:bg-[#CCFF00] hover:text-black"
+        }`}
       >
-        ♡ Save for later
+        {isAlreadySaved ? "SAVED" : "SAVE WORKOUT"}
       </button>
     </div>
   );

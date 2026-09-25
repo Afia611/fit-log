@@ -1,5 +1,5 @@
-import WorkoutCard from "./WorkoutCard";
 import { Workout } from "@/types/workout-types";
+import WorkoutLibrary from "./WorkoutLibrary";
 
 const Workouts = async () => {
   const res = await fetch(
@@ -11,25 +11,26 @@ const Workouts = async () => {
   return (
     <section
       id="library"
-      className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14"
+      className="bg-[#0B0D0E] px-4 py-12 text-white sm:px-6 sm:py-16"
     >
-      <div className="mb-8">
-        <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold uppercase text-white sm:text-4xl">
-          THE LIBRARY
-        </h2>
+      <div className="mx-auto max-w-7xl">
+        {/* Heading */}
+        <div className="mb-8">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#CCFF00]">
+            Workout Library
+          </p>
 
-        <p className="mt-2 text-sm text-[#9B9DA1] sm:text-base">
-          Twelve lifts covering every major muscle group.
-        </p>
-      </div>
+          <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold uppercase sm:text-4xl">
+            Find Your Next Workout
+          </h2>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {workouts.map((workout) => (
-          <WorkoutCard
-            key={workout.id}
-            workout={workout}
-          />
-        ))}
+          <p className="mt-2 text-sm text-[#9B9DA1]">
+            Explore workouts and build your perfect training plan.
+          </p>
+        </div>
+
+        {/* Search + Workout Cards */}
+        <WorkoutLibrary workouts={workouts} />
       </div>
     </section>
   );

@@ -1,12 +1,16 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { Workout } from "@/types/workout-types";
 
 type WorkoutContextType = {
   plan: Workout[];
   saved: Workout[];
-  isLoading: boolean;
   addToPlan: (workout: Workout) => boolean;
   saveWorkout: (workout: Workout) => boolean;
   removeFromPlan: (id: number) => void;
@@ -19,8 +23,34 @@ export const WorkoutContext =
 const WorkoutProvider = ({ children }: { children: ReactNode }) => {
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const isLoading = false;
+useEffect(() => {
+  const storedPlan = localStorage.getItem("fitlog-plan");
+  const storedSaved = localStorage.getItem("fitlog-saved");
+
+  if (storedPlan) {
+    setPlan(JSON.parse(storedPlan));
+  }
+
+  if (storedSaved) {
+    setSaved(JSON.parse(storedSaved));
+  }
+
+  setIsLoaded(true);
+}, []);
+
+useEffect(() => {
+  if (isLoaded) {
+    localStorage.setItem("fitlog-plan", JSON.stringify(plan));
+  }
+}, [plan, isLoaded]);
+
+useEffect(() => {
+  if (isLoaded) {
+    localStorage.setItem("fitlog-saved", JSON.stringify(saved));
+  }
+}, [saved, isLoaded]);
 
   const addToPlan = (workout: Workout) => {
     const alreadyAdded = plan.some(
@@ -71,7 +101,6 @@ const WorkoutProvider = ({ children }: { children: ReactNode }) => {
       value={{
         plan,
         saved,
-        isLoading,
         addToPlan,
         saveWorkout,
         removeFromPlan,
