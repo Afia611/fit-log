@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import Link from "next/link";
 import { WorkoutContext } from "@/context/WorkoutContext";
 import PlanWorkoutCard from "@/components/shared/PlanWorkoutCard";
-import Loading from "@/app/loading";
+
 
 const MyPlanPage = () => {
   const workoutContext = useContext(WorkoutContext);
@@ -31,19 +31,21 @@ const MyPlanPage = () => {
     </main>
   );
 }
-  // Today's Plan metrics
-  const totalMinutes = plan.reduce(
+  // Select workouts depending on the active tab
+  const activeWorkouts = activeTab === "plan" ? plan : saved;
+
+// Metrics change according to the active tab
+  const totalExercises = activeWorkouts.length;
+
+  const totalMinutes = activeWorkouts.reduce(
     (total, workout) => total + workout.duration,
     0
   );
-
-  const totalCalories = plan.reduce(
+  
+  const totalCalories = activeWorkouts.reduce(
     (total, workout) => total + workout.caloriesBurned,
     0
   );
-
-  // Select workouts depending on active tab
-  const activeWorkouts = activeTab === "plan" ? plan : saved;
 
   // Search workouts by name or muscle group
   const filteredWorkouts = activeWorkouts.filter((workout) => {
@@ -104,7 +106,7 @@ const MyPlanPage = () => {
             </p>
 
             <p className="mt-2 font-[family-name:var(--font-oswald)] text-3xl font-bold text-[#CCFF00]">
-              {plan.length}
+              {totalExercises}
             </p>
           </div>
 
